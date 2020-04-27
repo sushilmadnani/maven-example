@@ -1,0 +1,111 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.sushil.maven</groupId>
+  <artifactId>profilesdemo</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>jar</packaging>
+
+  <name>profilesdemo</name>
+  <url>http://maven.apache.org</url>
+
+  	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+	</properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.1</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+    
+  <profiles>
+  	<profile>
+  		<id>dev</id>
+  		<activation>
+        	<!-- this profile is active by default -->
+            <activeByDefault>true</activeByDefault>
+            <!-- activate if system properties 'env=dev' -->
+            <property>
+            	<name>env</name>
+                <value>dev</value>
+            </property>
+        </activation>
+  		<properties>
+  			<!-- build.profile.id>dev</build.profile.id-->
+  			<db.driverClassName>com.mysql.jdbc.Driver</db.driverClassName>
+            <db.url>jdbc:mysql://localhost:3306/dev</db.url>
+            <db.username>sushil</db.username>
+            <db.password>devpassword</db.password>
+  		</properties>
+  	</profile>
+  	<profile>
+  		<id>test</id>
+  		<activation>
+        	<!-- activate if system properties 'env=test' -->
+            <property>
+            	<name>env</name>
+                <value>test</value>
+            </property>
+        </activation>
+  		<properties>
+  			<build.profile.id>test</build.profile.id>
+  		</properties>
+  	</profile>
+  	<profile>
+  		<id>prod</id>
+  		<activation>
+        	<!-- activate if system properties 'env=prod' -->
+            <property>
+            	<name>env</name>
+                <value>prod</value>
+            </property>
+        </activation>
+  		<properties>
+  			<!-- build.profile.id>prod</build.profile.id-->
+  			<db.driverClassName>com.mysql.jdbc.Driver</db.driverClassName>
+            <db.url>jdbc:mysql://live01:3306/prod</db.url>
+            <db.username>sushil</db.username>
+            <db.password>prodpassword</db.password>
+  		</properties>
+  	</profile>
+  </profiles>
+  
+   <build>
+	   <pluginManagement>
+			<plugins>
+	            <!-- display active profile in compile phase -->
+	            <plugin>
+	                <groupId>org.apache.maven.plugins</groupId>
+	                <artifactId>maven-help-plugin</artifactId>
+	                <version>3.1.0</version>
+	                <executions>
+	                    <execution>
+	                        <id>show-profiles</id>
+	                        <phase>compile</phase>
+	                        <goals>
+	                            <goal>active-profiles</goal>
+	                        </goals>
+	                    </execution>
+	                </executions>
+	            </plugin>
+	        </plugins>
+	    </pluginManagement>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+	
+	
+  </build>
+  
+</project>
+
